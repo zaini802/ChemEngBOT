@@ -4,28 +4,6 @@ import math
 # Set page configuration
 st.set_page_config(page_title="ChemEngBot", layout="wide", initial_sidebar_state="expanded")
 
-# Custom CSS for better styling
-st.markdown("""
-    <style>
-    .main {
-        padding: 2rem;
-        background-color: #f8fafc;
-    }
-    .stTitle {
-        color: #10B981;
-        text-align: center;
-    }
-    h2, h3 {
-        color: #059669;
-    }
-    .stButton > button {
-        background-color: #10B981;
-        color: white;
-        font-weight: bold;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
 class ChemEngBot:
     def __init__(self):
         self.name = "ChemEngBot"
@@ -292,9 +270,5 @@ elif page == "General Chat":
 
 # Footer
 st.markdown("---")
-st.markdown("""
-<div style='text-align: center; padding: 20px;'>
-    <h3 style='color: #10B981; margin-bottom: 10px;'>Developed by Zunair Shahzad | UET Lahore</h3>
-    <p style='font-size: 18px; color: #059669;'>🔗 <a href='https://github.com/zaini802/ChemEngBOT' target='_blank'>GitHub Repository</a></p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("**Developed by Zunair Shahzad | UET Lahore**")
+st.markdown("[GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
