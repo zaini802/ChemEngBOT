@@ -282,9 +282,5 @@ elif page == "General Chat":
 
 # Footer
 st.markdown("---")
-st.markdown("""
-<div style='text-align: center'>
-    <p>ChemEngBot v1.0 | Chemical Engineering Assistant | Powered by Streamlit</p>
-    <p style='font-size: 12px; color: gray;'>All calculations are for educational purposes. Always verify with professional engineering standards.</p>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("**Developed by Zunair Shahzad | UET Lahore**")
+st.markdown("🔗 [GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
