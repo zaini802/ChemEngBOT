@@ -282,5 +282,9 @@ elif page == "General Chat":
 
 # Footer
 st.markdown("---")
-st.markdown("**Developed by Zunair Shahzad | UET Lahore**")
-st.markdown("🔗 [GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
+st.markdown("""
+<div style='text-align: center; padding: 20px;'>
+    <h3 style='color: #1f77b4; margin-bottom: 10px;'>Developed by Zunair Shahzad | UET Lahore</h3>
+    <p style='font-size: 18px; color: #0066cc;'>🔗 <a href='https://github.com/zaini802/ChemEngBOT' target='_blank'>GitHub Repository</a></p>
+</div>
+""", unsafe_allow_html=True)
