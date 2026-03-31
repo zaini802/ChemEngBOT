@@ -7,11 +7,88 @@ st.set_page_config(page_title="ChemEngBot", layout="wide", initial_sidebar_state
 # Custom CSS for better styling
 st.markdown("""
     <style>
+    /* Main container */
     .main {
         padding: 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     }
+    
+    /* Title styling */
     .stTitle {
-        color: #1f77b4;
+        color: #10B981 !important;
+        font-size: 2.5rem !important;
+        font-weight: bold !important;
+        text-align: center !important;
+    }
+    
+    /* Header styling */
+    h2, h3, h4 {
+        color: #059669 !important;
+        font-weight: bold !important;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background-color: #10B981 !important;
+        color: white !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        padding: 12px 30px !important;
+        font-size: 16px !important;
+    }
+    
+    .stButton > button:hover {
+        background-color: #059669 !important;
+    }
+    
+    /* Input box styling */
+    .stNumberInput, .stTextInput, .stSelectbox {
+        border-radius: 8px !important;
+    }
+    
+    /* Cards and containers */
+    .stMetric {
+        background-color: #f0f9ff !important;
+        border-radius: 10px !important;
+        padding: 20px !important;
+        border-left: 4px solid #10B981 !important;
+    }
+    
+    /* Success/Info/Error boxes */
+    .stAlert {
+        border-radius: 10px !important;
+        padding: 15px !important;
+    }
+    
+    /* Sidebar styling */
+    .stSidebar {
+        background-color: #f8fafc !important;
+        border-right: 3px solid #10B981 !important;
+    }
+    
+    /* Radio button styling */
+    .stRadio {
+        color: #262730 !important;
+    }
+    
+    /* Text styling */
+    p {
+        color: #374151 !important;
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Column styling */
+    .stColumn {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+        padding: 20px !important;
+        border-radius: 10px !important;
+        border: 1px solid #e5e7eb !important;
+    }
+    
+    /* Horizontal line */
+    hr {
+        border-color: #10B981 !important;
     }
     </style>
     """, unsafe_allow_html=True)
