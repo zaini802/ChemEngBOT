@@ -135,9 +135,8 @@ with st.sidebar:
             "🔥 HEAT TRANSFER",
             "📉 PRESSURE DROP",
             "📐 NTU METHOD",
-        "🌡️ TEMPERATURE CONVERTER",
-        "📚 FORMULAS",
-        "💡 CONCEPTS"
+            "📚 FORMULAS",
+            "💡 CONCEPTS"
         ],
         index=0
     )
@@ -244,104 +243,6 @@ elif feature == "🔥 HEAT TRANSFER":
         Q = U * A * dT
         st.success(f"### ✅ Heat Transfer Rate = **{Q:,.2f} W**")
         st.info(f"#### 📊 = {Q/1000:.2f} kW")
-
-elif feature == "📉 PRESSURE DROP":
-    st.header("📉 Pressure Drop Calculator")
-    st.markdown("**Formula:** ΔP = f × (L/D) × (ρv²/2)")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        f = st.number_input("Friction factor f", value=0.02)
-        L = st.number_input("Length L (m)", value=100.0)
-    with col2:
-        d = st.number_input("Diameter d (m)", value=0.1)
-        rho = st.number_input("Density ρ", value=1000.0)
-        v = st.number_input("Velocity v (m/s)", value=2.0)
-    
-    if st.button("Calculate ΔP"):
-        delta_p = f * (L / d) * (rho * v**2 / 2)
-        st.success(f"ΔP = {delta_p:.0f} Pa")
-
-elif feature == "🌡️ TEMPERATURE CONVERTER":
-    st.header("🌡️ Temperature Converter")
-    st.markdown("**Convert between Celsius, Fahrenheit, Kelvin, Rankine**")
-    st.info("💡 Enter value in any unit → Get all 4 scales instantly!")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        input_unit = st.selectbox("Input Unit:", ["Celsius (°C)", "Fahrenheit (°F)", "Kelvin (K)", "Rankine (°R)"])
-        temp_value = st.number_input("Temperature Value:", value=25.0, step=1.0)
-    
-    if st.button("🔄 Convert Temperature", type="primary"):
-        # Convert to Celsius first
-        if "Celsius" in input_unit:
-            c = temp_value
-        elif "Fahrenheit" in input_unit:
-            c = (temp_value - 32) * 5/9
-        elif "Kelvin" in input_unit:
-            c = temp_value - 273.15
-        elif "Rankine" in input_unit:
-            c = (temp_value - 491.67) * 5/9
-        
-        # Convert to all scales
-        f = c * 9/5 + 32
-        k = c + 273.15
-        r = f + 459.67
-        
-        st.success("✅ **Converted Values:**")
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("°C", f"{c:.2f}")
-        col2.metric("°F", f"{f:.2f}")
-        col3.metric("K", f"{k:.2f}")
-        col4.metric("°R", f"{r:.2f}")
-        st.info(f"Input: {temp_value} {input_unit.split()[1]} → All scales above")
-
-elif feature == "📐 NTU METHOD":
-    st.header("📐 NTU Method")
-    st.markdown("**NTU = UA/C_min**")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        U = st.number_input("U", value=500.0)
-        A = st.number_input("A", value=10.0)
-    C_min = st.number_input("C_min", value=1000.0)
-    
-    if st.button("Calculate NTU"):
-        NTU = (U * A) / C_min
-        st.success(f"NTU = {NTU:.2f}")
-
-    if st.button("Calculate NTU"):
-        NTU = (U * A) / C_min
-        st.success(f"NTU = {NTU:.2f}")
-
-elif feature == "📚 FORMULAS":
-    from formulas_data import formulas_data
-    st.header("📚 Chemical Engineering Formulas")
-    st.info("Select subject → View 25+ detailed formulas")
-    
-    subject = st.selectbox("Choose Subject:", list(formulas_data.keys()))
-    
-    if subject:
-        st.subheader(f"📖 {subject}")
-        for formula in formulas_data[subject]:
-            with st.expander(f"📐 {formula['name']}"):
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.markdown(f"**Description:** {formula['desc']}")
-                    st.markdown(f"**Parameters:** {formula['params']}")
-                with col2:
-                    st.markdown(f"**Equation:** `{formula['eq']}`")
-                    st.info(f"**Unit:** {formula['unit']}\n**Purpose:** {formula['purpose']}")
-
-elif feature == "💡 CONCEPTS":
-    st.header("💡 Concepts")
-    st.markdown("""
-    **Engineering Terms:**
-    - **Reynolds Number**: Flow type (Laminar/Turbulent)
-    - **Heat Transfer**: Q = UAΔT
-    - **Pressure Drop**: Energy loss in pipes
-    - **NTU**: Heat exchanger performance
-    """)
 
 # 👇 YEH BADA FOOTER HAI — POORE APP KE NICHE DIKHEGA
 st.markdown("---")
