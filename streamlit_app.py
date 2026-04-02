@@ -2,7 +2,7 @@ import streamlit as st
 import math
 
 # Set page configuration
-st.set_page_config(page_title="ChemEngBot", layout="wide", initial_sidebar_state="expanded", theme="dark")
+st.set_page_config(page_title="ChemEngBot", page_icon="🧪", layout="wide", initial_sidebar_state="expanded")
 
 class ChemEngBot:
     def __init__(self):
@@ -268,19 +268,92 @@ elif page == "General Chat":
         
         st.success(response)
 
+# Custom CSS for beautiful dark theme, no white flash, circular avatar top-right
+st.markdown("""
+<style>
+    /* Dark theme */
+    .stApp {
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        color: white;
+    }
+    .stApp [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    }
+    /* Circular avatar top-right */
+    .header-avatar {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .avatar-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 4px 20px rgba(0,255,255,0.3);
+        border: 3px solid #00ffff;
+        transition: all 0.3s ease;
+    }
+    .avatar-img:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 25px rgba(0,255,255,0.5);
+    }
+    /* Metrics cards glow */
+    [data-testid="metric-container"] {
+        background: rgba(255,255,255,0.05);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0,255,255,0.2);
+    }
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(45deg, #00ffff, #0080ff);
+        color: white;
+        border-radius: 25px;
+        border: none;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,255,255,0.4);
+    }
+    /* Title glow */
+    h1 {
+        text-shadow: 0 0 20px #00ffff;
+        background: linear-gradient(45deg, #00ffff, white);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    /* Footer */
+    .footer {
+        font-size: 18px !important;
+        color: #90EE90 !important;
+        text-shadow: 0 0 10px #90EE90 !important;
+        text-align: center;
+        padding: 20px;
+        font-weight: bold;
+        position: fixed;
+        bottom: 10px;
+        right: 20px;
+        background: rgba(0,0,0,0.7);
+        border-radius: 15px;
+        border: 1px solid #90EE90;
+    }
+</style>
+
+<!-- Circular avatar top-right -->
+<div class="header-avatar">
+    <img src="images/avatar.jpg" alt="Avatar" class="avatar-img">
+</div>
+""", unsafe_allow_html=True)
+
 # Footer
 st.markdown("---")
 st.markdown("""
-<style>
-.footer {
-    font-size: 24px !important;
-    color: #90EE90 !important;
-    text-shadow: 0 0 10px #90EE90 !important;
-    text-align: center;
-    padding: 20px;
-    font-weight: bold;
-}
-</style>
-<div class="footer">Developed by Zunair Shahzad | UET Lahore</div>
+<div class="footer">
+    Developed by Zunair Shahzad | UET Lahore
+</div>
 """, unsafe_allow_html=True)
 st.markdown("[GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
