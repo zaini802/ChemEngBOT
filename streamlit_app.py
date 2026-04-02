@@ -1,395 +1,197 @@
 import streamlit as st
-import math
 
-# Set page configuration
-st.set_page_config(page_title="ChemEngBot", page_icon="🧪", layout="wide", initial_sidebar_state="expanded")
+# Page config
+st.set_page_config(
+    page_title="ChemEngBot",
+    page_icon="🧪",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-class ChemEngBot:
-    def __init__(self):
-        self.name = "ChemEngBot"
-    
-    def calculate_reynolds(self, rho, v, d, mu):
-        """Re = ρvd/μ"""
-        return (rho * v * d) / mu
-    
-    def calculate_heat_transfer(self, u, a, delta_t):
-        """Q = U A ΔT"""
-        return u * a * delta_t
-    
-    def calculate_ntu(self, u, a, c_min):
-        """NTU = UA/Cmin"""
-        return (u * a) / c_min
-    
-    def calculate_pressure_drop(self, f, l, d, rho, v):
-        """ΔP = f * (L/D) * (ρv²/2)"""
-        return f * (l / d) * (rho * v**2 / 2)
-    
-    def explain_concept(self, text):
-        explanations = {
-            'distillation': "Distillation: A separation process that uses boiling point differences. Hot vapor rises, cool liquid falls. Used in refineries to separate crude oil into petrol, diesel, etc.",
-            'heat exchanger': "Heat Exchanger: A device that transfers heat between two fluids without mixing them. Types include shell-and-tube, plate, and double-pipe.",
-            'reactor': "Chemical Reactor: Vessel where chemical reactions occur. Types: CSTR (Continuous Stirred Tank), PFR (Plug Flow), and Batch Reactors.",
-            'pump': "Pump: A device that moves fluids by mechanical action. Types: centrifugal, positive displacement, diaphragm pumps.",
-            'valve': "Valve: Controls fluid flow. Types: gate, globe, ball, butterfly, check valves.",
-            'npsh': "NPSH (Net Positive Suction Head): Minimum pressure required at pump suction to avoid cavitation. Critical for pump selection.",
-            'cavitation': "Cavitation: Formation of vapor bubbles in liquid due to low pressure. Damages pumps and valves. Prevented by maintaining adequate NPSH.",
-            'fouling': "Fouling: Deposit buildup on heat exchanger surfaces. Reduces efficiency. Prevented by cleaning and using fouling factors in design."
-        }
-        
-        text_lower = text.lower()
-        for key, value in explanations.items():
-            if key in text_lower:
-                return value
-        
-        return "I can explain: distillation, heat exchanger, reactor, pump, valve, NPSH, cavitation, fouling. Ask 'what is' followed by any of these terms!"
-
-# Initialize the bot
-bot = ChemEngBot()
-
-# Sidebar for navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Select Feature:", [
-    "Home",
-    "Reynolds Number",
-    "Heat Transfer",
-    "Pressure Drop",
-    "NTU Method",
-    "Chemical Formulas",
-    "Explain Concepts",
-    "General Chat"
-])
-
-# Main title
-st.title("🧪 Chemical Engineering Assistant Bot")
-st.markdown("---")
-
-if page == "Home":
-    st.header("Welcome to ChemEngBot!")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("📋 Available Features:")
-        st.write("""
-        1. **Reynolds Number** - Calculate flow characteristics
-        2. **Heat Transfer** - Compute heat transfer rates
-        3. **Pressure Drop** - Calculate pressure losses in pipes
-        4. **NTU Method** - Heat exchanger effectiveness
-        5. **Chemical Formulas** - View common engineering formulas
-        6. **Explain Concepts** - Learn engineering concepts
-        7. **General Chat** - Ask general questions
-        """)
-    
-    with col2:
-        st.subheader("📚 Quick Guide:")
-        st.write("""
-        - Select a feature from the sidebar
-        - Enter required parameters
-        - Get instant calculations and explanations
-        - All calculations are accurate and conform to engineering standards
-        
-        **Ready to start?** Select a feature from the sidebar!
-        """)
-
-elif page == "Reynolds Number":
-    st.header("Reynolds Number Calculator")
-    st.write("Calculate Reynolds number and identify flow type (Laminar, Transitional, or Turbulent)")
-    
-    st.markdown("**Formula: Re = ρvd/μ**")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        rho = st.number_input("Density ρ (kg/m³):", min_value=0.1, value=1000.0, step=10.0)
-        v = st.number_input("Velocity v (m/s):", min_value=0.1, value=2.0, step=0.1)
-    
-    with col2:
-        d = st.number_input("Diameter d (m):", min_value=0.001, value=0.1, step=0.01)
-        mu = st.number_input("Viscosity μ (Pa·s):", min_value=0.0001, value=0.001, step=0.0001)
-    
-    if st.button("Calculate Reynolds Number", key="reynolds_calc"):
-        try:
-            Re = bot.calculate_reynolds(rho, v, d, mu)
-            
-            if Re < 2000:
-                flow_type = "Laminar Flow"
-                color = "🟢"
-            elif Re < 4000:
-                flow_type = "Transitional Flow"
-                color = "🟡"
-            else:
-                flow_type = "Turbulent Flow"
-                color = "🔴"
-            
-            st.success("Calculation Successful!")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Reynolds Number", f"{Re:.2f}")
-            with col2:
-                st.metric("Flow Type", f"{color} {flow_type}")
-            
-            st.info(f"**Interpretation:** Re = {Re:.2f} indicates {flow_type.lower()}")
-        except Exception as e:
-            st.error(f"Error: Please check your inputs. {str(e)}")
-
-elif page == "Heat Transfer":
-    st.header("Heat Transfer Calculator")
-    st.write("Calculate heat transfer rate using Q = U × A × ΔT")
-    
-    st.markdown("**Formula: Q = U × A × ΔT**")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        u = st.number_input("Heat Transfer Coefficient U (W/m²·K):", min_value=0.1, value=100.0, step=10.0)
-        a = st.number_input("Area A (m²):", min_value=0.1, value=10.0, step=0.5)
-    
-    with col2:
-        delta_t = st.number_input("Temperature Difference ΔT (K or °C):", min_value=0.1, value=50.0, step=1.0)
-    
-    if st.button("Calculate Heat Transfer", key="heat_calc"):
-        try:
-            Q = bot.calculate_heat_transfer(u, a, delta_t)
-            st.success("Calculation Successful!")
-            st.metric("Heat Transfer Rate Q", f"{Q:.2f} Watts (W)")
-            st.info(f"**Formula Applied:** Q = {u} × {a} × {delta_t} = {Q:.2f} W")
-        except Exception as e:
-            st.error(f"Error: Please check your inputs. {str(e)}")
-
-elif page == "Pressure Drop":
-    st.header("Pressure Drop Calculator")
-    st.write("Calculate pressure drop in pipes using: ΔP = f × (L/D) × (ρv²/2)")
-    
-    st.markdown("**Formula: ΔP = f × (L/D) × (ρv²/2)**")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        f = st.number_input("Friction Factor f:", min_value=0.001, value=0.03, step=0.001)
-        l = st.number_input("Pipe Length L (m):", min_value=0.1, value=100.0, step=5.0)
-        d = st.number_input("Pipe Diameter D (m):", min_value=0.01, value=0.1, step=0.01)
-    
-    with col2:
-        rho = st.number_input("Density ρ (kg/m³):", min_value=0.1, value=1000.0, step=10.0)
-        v = st.number_input("Velocity v (m/s):", min_value=0.1, value=2.0, step=0.1)
-    
-    if st.button("Calculate Pressure Drop", key="pressure_calc"):
-        try:
-            delta_p = bot.calculate_pressure_drop(f, l, d, rho, v)
-            st.success("Calculation Successful!")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Pressure Drop ΔP", f"{delta_p:.2f} Pa")
-            with col2:
-                st.metric("Pressure Drop (bar)", f"{delta_p/100000:.5f} bar")
-        except Exception as e:
-            st.error(f"Error: Please check your inputs. {str(e)}")
-
-elif page == "NTU Method":
-    st.header("NTU (Number of Transfer Units) Calculator")
-    st.write("Calculate NTU and heat exchanger effectiveness")
-    
-    st.markdown("**Formula: NTU = UA / C_min**")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        u = st.number_input("Heat Transfer Coefficient U (W/m²·K):", min_value=0.1, value=100.0, step=10.0, key="ntu_u")
-        a = st.number_input("Area A (m²):", min_value=0.1, value=10.0, step=0.5, key="ntu_a")
-    
-    with col2:
-        c_min = st.number_input("Minimum Heat Capacity Rate C_min (W/K):", min_value=0.1, value=500.0, step=10.0)
-    
-    if st.button("Calculate NTU", key="ntu_calc"):
-        try:
-            ntu = bot.calculate_ntu(u, a, c_min)
-            effectiveness = 1 - math.exp(-ntu)
-            
-            st.success("Calculation Successful!")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("NTU Value", f"{ntu:.4f}")
-            with col2:
-                st.metric("Effectiveness", f"{effectiveness:.2%}")
-            
-            st.info(f"**Interpretation:** NTU = {ntu:.4f} indicates an effectiveness of {effectiveness:.2%} for this heat exchanger configuration.")
-        except Exception as e:
-            st.error(f"Error: Please check your inputs. {str(e)}")
-
-elif page == "Chemical Formulas":
-    st.header("Common Chemical Engineering Formulas")
-    
-    formulas = {
-        "Reynolds Number": "Re = ρvd/μ",
-        "Heat Transfer": "Q = UAΔT",
-        "Pressure Drop": "ΔP = f × (L/D) × (ρv²/2)",
-        "NTU Method": "NTU = UA/C_min",
-        "Nusselt Number": "Nu = hL/k",
-        "Prandtl Number": "Pr = μCp/k",
-        "Grashof Number": "Gr = gβΔTL³ρ²/μ²",
-        "Fourier's Law": "q = -k dT/dx"
+# Custom CSS (optional - for better look)
+st.markdown("""
+    <style>
+    /* Main header */
+    .main-header {
+        font-size: 2.5rem;
+        color: #4CAF50;
+        text-align: center;
+        margin-bottom: 1rem;
     }
     
-    for name, formula in formulas.items():
-        st.markdown(f"**{name}:**")
-        st.code(formula, language="latex")
-
-elif page == "Explain Concepts":
-    st.header("Learn Engineering Concepts")
+    /* Card style */
+    .card {
+        background-color: #f0f2f6;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 0.5rem 0;
+    }
     
-    concept = st.selectbox(
-        "Select a concept to learn about:",
-        ["distillation", "heat exchanger", "reactor", "pump", "valve", "npsh", "cavitation", "fouling"]
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background-color: #1e3a8a;
+    }
+    
+    [data-testid="stSidebar"] * {
+        color: white !important;
+    }
+    
+    /* Buttons */
+    .stButton button {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 5px;
+        width: 100%;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Sidebar
+with st.sidebar:
+    st.image("https://img.icons8.com/color/96/chemical-plant.png", width=80)
+    st.title("🧪 ChemEngBot")
+    st.markdown("---")
+    
+    # Navigation
+    feature = st.radio(
+        "📌 **Select Feature**",
+        [
+            "🏠 Home",
+            "📊 Reynolds Number",
+            "🔥 Heat Transfer",
+            "📉 Pressure Drop",
+            "📚 Formulas",
+            "💡 Concepts"
+        ],
+        index=0
     )
     
-    if concept:
-        explanation = bot.explain_concept(concept)
-        st.info(explanation)
+    st.markdown("---")
+    st.caption("👨‍🔧 Developed by **Zunair Shahzad**")
+    st.caption("🎓 UET Lahore")
 
-elif page == "General Chat":
-    st.header("General Chat")
-    st.write("Ask me anything about chemical engineering!")
+# Main content area
+if feature == "🏠 Home":
+    # Hero section
+    st.markdown('<p class="main-header">Chemical Engineering Assistant Bot</p>', unsafe_allow_html=True)
+    st.markdown("---")
     
-    user_input = st.text_input("Your question:")
+    # Welcome message
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown("""
+        ### 👋 Welcome to ChemEngBot!
+        
+        Your personal **Chemical Engineering Assistant** that helps you with:
+        
+        - ✅ Instant calculations
+        - ✅ Formula references
+        - ✅ Concept explanations
+        
+        **Select any feature from the sidebar to get started!**
+        """)
+    with col2:
+        st.image("https://img.icons8.com/color/200/chemical-plant.png")
     
-    if user_input:
-        text = user_input.lower().strip()
-        
-        if any(word in text for word in ['hi', 'hello', 'hey', 'salam']):
-            response = "Assalam-o-Alaikum! How can I assist you with Chemical Engineering today?"
-        elif any(word in text for word in ['thanks', 'thank you', 'shukriya']):
-            response = "You're welcome! Feel free to ask more questions."
-        elif 'help' in text:
-            response = "I can help you with: Reynolds Number calculations, Heat Transfer, Pressure Drop, NTU Method, Chemical Formulas, and Engineering Concepts. Select a feature from the sidebar!"
-        elif any(word in text for word in ['distillation', 'heat exchanger', 'reactor', 'pump', 'valve', 'npsh', 'cavitation', 'fouling']):
-            response = bot.explain_concept(text)
-        else:
-            response = "I'm not sure about that. Try selecting a specific calculation from the sidebar or ask about: distillation, heat exchanger, reactor, pump, valve, NPSH, cavitation, or fouling."
-        
-        st.success(response)
+    st.markdown("---")
+    
+    # Features grid
+    st.subheader("📋 Available Features")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        with st.container():
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 📊 **Reynolds Number**")
+            st.write("Calculate flow characteristics (Laminar/Turbulent)")
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 📉 **Pressure Drop**")
+            st.write("Calculate pressure losses in pipes")
+            st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col2:
+        with st.container():
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 🔥 **Heat Transfer**")
+            st.write("Compute heat transfer rates (Q = UAΔT)")
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 📐 **NTU Method**")
+            st.write("Heat exchanger effectiveness")
+            st.markdown('</div>', unsafe_allow_html=True)
+    
+    with col3:
+        with st.container():
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 📚 **Formulas**")
+            st.write("View common engineering formulas")
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            st.markdown('<div class="card">', unsafe_allow_html=True)
+            st.markdown("### 💡 **Concepts**")
+            st.write("Learn engineering concepts")
+            st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Quick stats
+    st.markdown("---")
+    st.subheader("📈 Quick Reference")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Reynolds Number", "Re = ρvd/μ")
+    with col2:
+        st.metric("Heat Transfer", "Q = UAΔT")
+    with col3:
+        st.metric("Pressure Drop", "ΔP = f(L/D)(ρv²/2)")
+    with col4:
+        st.metric("NTU", "NTU = UA/C_min")
 
-# Custom CSS for beautiful dark theme, no white flash, circular avatar top-right
-st.markdown("""
-<style>
-    /* Dark theme */
-.stApp {
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-    }
-    /* Main content text white */
-    .main .stMarkdown, .main .stText {
-        color: white !important;
-    }
-/* Sidebar PERFECT WHITE text */
-    section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-    }
-    section[data-testid="stSidebar"] label,
-    section[data-testid="stSidebar"] div[role="radiogroup"] label {
-        color: white !important;
-        font-size: 16px !important;
-        font-weight: bold !important;
-    }
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2 {
-        color: #00ffff !important;
-    }
-/* Results BLACK text */
-    div[data-testid="stStatusWidget"] div[role="status"] {
-        color: black !important;
-    }
-    .stSuccess {
-        background-color: #d4edda !important;
-        color: #155724 !important;
-        border: 1px solid #c3e6cb !important;
-    }
-    .stInfo {
-        background-color: #d1ecf1 !important;
-        color: #0c5460 !important;
-        border: 1px solid #bee5eb !important;
-    }
-    /* Circular avatar top-right */
-    .header-avatar {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-    .avatar-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        box-shadow: 0 4px 20px rgba(0,255,255,0.3);
-        border: 3px solid #00ffff;
-        transition: all 0.3s ease;
-    }
-    .avatar-img:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 25px rgba(0,255,255,0.5);
-    }
-    /* Metrics cards glow */
-[data-testid="metric-container"] {
-        background: rgba(20,20,40,0.8) !important;
-        border-radius: 15px;
-        backdrop-filter: blur(10px);
-        border: 2px solid #00ffff;
-        color: white !important;
-    }
-    [data-testid="metric-value"] {
-        color: #00ffff !important;
-        font-size: 2.5rem !important;
-    }
-    [data-testid="metric-label"] {
-        color: white !important;
-    }
-    /* Buttons */
-    .stButton > button {
-        background: linear-gradient(45deg, #00ffff, #0080ff);
-        color: white;
-        border-radius: 25px;
-        border: none;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,255,255,0.4);
-    }
-    /* Title glow */
-    h1 {
-        text-shadow: 0 0 20px #00ffff;
-        background: linear-gradient(45deg, #00ffff, white);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    /* Footer */
-    .footer {
-        font-size: 18px !important;
-        color: #90EE90 !important;
-        text-shadow: 0 0 10px #90EE90 !important;
-        text-align: center;
-        padding: 20px;
-        font-weight: bold;
-        position: fixed;
-        bottom: 10px;
-        right: 20px;
-        background: rgba(0,0,0,0.7);
-        border-radius: 15px;
-        border: 1px solid #90EE90;
-    }
-</style>
+elif feature == "📊 Reynolds Number":
+    st.header("📊 Reynolds Number Calculator")
+    st.markdown("**Formula:** Re = ρvd/μ")
+    st.info("Reynolds Number determines flow type: Laminar (<2000), Transitional (2000-4000), Turbulent (>4000)")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        rho = st.number_input("Density ρ (kg/m³):", value=1000.0, step=10.0, format="%.2f")
+        v = st.number_input("Velocity v (m/s):", value=1.0, step=0.1, format="%.2f")
+    with col2:
+        d = st.number_input("Diameter d (m):", value=0.05, step=0.01, format="%.3f")
+        mu = st.number_input("Viscosity μ (Pa·s):", value=0.001, step=0.0001, format="%.4f")
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🔬 Calculate Reynolds Number", type="primary", use_container_width=True):
+            if mu > 0:
+                Re = (rho * v * d) / mu
+                st.success(f"### Reynolds Number = **{Re:.2f}**")
+                
+                if Re < 2000:
+                    st.info("🟢 **Flow Type:** Laminar Flow")
+                elif Re < 4000:
+                    st.warning("🟡 **Flow Type:** Transitional Flow")
+                else:
+                    st.error("🔴 **Flow Type:** Turbulent Flow")
+            else:
+                st.error("❌ Viscosity must be greater than 0!")
 
-<!-- Circular avatar top-right -->
-<div class="header-avatar">
-    <img src="images/avatar.jpg" alt="Avatar" class="avatar-img">
-</div>
-""", unsafe_allow_html=True)
+elif feature == "🔥 Heat Transfer":
+    st.header("🔥 Heat Transfer Calculator")
+    st.markdown("**Formula:** Q = U × A × ΔT")
+    st.info("Heat transfer rate in Watts (W)")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        U = st.number_input("Overall heat transfer coefficient U (W/m²·K):", value=500.0, step=50.0)
+        A = st.number_input("Area A (m²):", value=10.0, step=1.0)
+    with col2:
+        dT = st.number_input("Temperature difference ΔT (K or °C):", value=50.0, step=5.0)
+    
+    if st.button("🔥 Calculate Heat Transfer", type="primary"):
+        Q = U * A * dT
+        st.success(f"### Heat Transfer Rate = **{Q:,.2f} W**")
+        st.info(f"#### {Q/1000:.2f} kW")
 
-# Footer
-st.markdown("---")
-st.markdown("""
-<div class="footer">
-    Developed by Zunair Shahzad | UET Lahore
-</div>
-""", unsafe_allow_html=True)
-st.markdown("[GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
+# Add more features as needed...
