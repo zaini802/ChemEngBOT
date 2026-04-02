@@ -279,27 +279,33 @@ st.markdown("""
     .main .stMarkdown, .main .stText {
         color: white !important;
     }
-    /* Sidebar - WHITE text on dark bg */
-    .stApp [data-testid="stSidebar"] {
+/* Sidebar PERFECT WHITE text */
+    section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
     }
-    .stSidebar label, .stSidebar .radio > label {
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {
         color: white !important;
         font-size: 16px !important;
         font-weight: bold !important;
     }
-    .stSidebar h1, .stSidebar h2, .stSidebar h3 {
-        color: cyan !important;
+    section[data-testid="stSidebar"] h1, 
+    section[data-testid="stSidebar"] h2 {
+        color: #00ffff !important;
     }
-    /* Results - BLACK text on light bg */
-    .stSuccess, .stInfo, .stError {
+/* Results BLACK text */
+    div[data-testid="stStatusWidget"] div[role="status"] {
         color: black !important;
     }
     .stSuccess {
-        background-color: rgba(0,255,0,0.2) !important;
+        background-color: #d4edda !important;
+        color: #155724 !important;
+        border: 1px solid #c3e6cb !important;
     }
     .stInfo {
-        background-color: rgba(0,100,255,0.2) !important;
+        background-color: #d1ecf1 !important;
+        color: #0c5460 !important;
+        border: 1px solid #bee5eb !important;
     }
     /* Circular avatar top-right */
     .header-avatar {
