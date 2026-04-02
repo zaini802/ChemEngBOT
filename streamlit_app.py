@@ -2,7 +2,7 @@ import streamlit as st
 import math
 
 # Set page configuration
-st.set_page_config(page_title="ChemEngBot", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="ChemEngBot", layout="wide", initial_sidebar_state="expanded", theme="dark")
 
 class ChemEngBot:
     def __init__(self):
@@ -270,5 +270,17 @@ elif page == "General Chat":
 
 # Footer
 st.markdown("---")
-st.markdown("**Developed by Zunair Shahzad | UET Lahore**")
+st.markdown("""
+<style>
+.footer {
+    font-size: 24px !important;
+    color: #90EE90 !important;
+    text-shadow: 0 0 10px #90EE90 !important;
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+</style>
+<div class="footer">Developed by Zunair Shahzad | UET Lahore</div>
+""", unsafe_allow_html=True)
 st.markdown("[GitHub Repository](https://github.com/zaini802/ChemEngBOT)")
