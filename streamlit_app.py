@@ -272,12 +272,34 @@ elif page == "General Chat":
 st.markdown("""
 <style>
     /* Dark theme */
-    .stApp {
+.stApp {
         background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-        color: white;
     }
+    /* Main content text white */
+    .main .stMarkdown, .main .stText {
+        color: white !important;
+    }
+    /* Sidebar - WHITE text on dark bg */
     .stApp [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .stSidebar label, .stSidebar .radio > label {
+        color: white !important;
+        font-size: 16px !important;
+        font-weight: bold !important;
+    }
+    .stSidebar h1, .stSidebar h2, .stSidebar h3 {
+        color: cyan !important;
+    }
+    /* Results - BLACK text on light bg */
+    .stSuccess, .stInfo, .stError {
+        color: black !important;
+    }
+    .stSuccess {
+        background-color: rgba(0,255,0,0.2) !important;
+    }
+    .stInfo {
+        background-color: rgba(0,100,255,0.2) !important;
     }
     /* Circular avatar top-right */
     .header-avatar {
@@ -299,11 +321,19 @@ st.markdown("""
         box-shadow: 0 6px 25px rgba(0,255,255,0.5);
     }
     /* Metrics cards glow */
-    [data-testid="metric-container"] {
-        background: rgba(255,255,255,0.05);
+[data-testid="metric-container"] {
+        background: rgba(20,20,40,0.8) !important;
         border-radius: 15px;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(0,255,255,0.2);
+        border: 2px solid #00ffff;
+        color: white !important;
+    }
+    [data-testid="metric-value"] {
+        color: #00ffff !important;
+        font-size: 2.5rem !important;
+    }
+    [data-testid="metric-label"] {
+        color: white !important;
     }
     /* Buttons */
     .stButton > button {
