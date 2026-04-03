@@ -754,16 +754,44 @@ st.markdown("""
 # ==========================================
 # SIDEBAR
 # ==========================================
+# ==========================================
+# SIDEBAR
+# ==========================================
 with st.sidebar:
-    st.image("https://img.icons8.com/color/96/chemical-plant.png", width=80)
-    st.markdown(f"# {_('app_title')}")
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.image("https://img.icons8.com/color/96/chemical-plant.png", width=70)
+        st.markdown("# 🧪 ChemEngBot")
+    with col2:
+        # Load image
+        import base64
+        from PIL import Image
+        import io
+        
+        # Open image
+        img = Image.open("images/zunair.jpeg")
+        
+        # Convert to base64
+        buffered = io.BytesIO()
+        img.save(buffered, format="JPEG")
+        img_str = base64.b64encode(buffered.getvalue()).decode()
+        
+        # Display circle image
+        st.markdown(f"""
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <img src="data:image/jpeg;base64,{img_str}" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid #4CAF50; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+        </div>
+        """, unsafe_allow_html=True)
+    
     st.markdown("---")
     
-    # Language Selector
+    # ========== LANGUAGE SELECTOR ==========
     st.markdown(f"### {_('language')}")
-    lang_options = [f"{info['flag']} {name}" for name, info in languages.items()]
-    current_lang = st.session_state.get("language", "en")
     
+    current_lang = st.session_state.get("language", "en")
+    lang_options = [f"{info['flag']} {name}" for name, info in languages.items()]
+    
+    # Find current display
     current_display = "🇬🇧 English"
     for lang_name, info in languages.items():
         if info["code"] == current_lang:
@@ -778,7 +806,7 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Navigation
+    # ========== NAVIGATION ==========
     feature = st.radio(
         _("select_feature"),
         [_("home"), _("reynolds"), _("heat_transfer"), _("pressure_drop"), _("ntu"), _("temp_conv"), _("formulas"), _("concepts")],
